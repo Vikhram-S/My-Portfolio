@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Style for the profile image */
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <h1>Welcome to My Portfolio</h1>
+        <p>Hi, I’m Vikhram.</p>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Me</h2>
+        <img src="assets/vikhram-new.jpg" alt="Vikhram S" class="profile-img">
+        <p><strong>Vikhram S</strong></p>
+        <p>Data Scientist | Data Analyst | Business Analyst</p>
+        <p>I am a data enthusiast who dances with numbers, orchestrates algorithms, and breathes life into data-driven insights. My journey began with a curious mind and a keyboard, and every dataset I explore becomes a story waiting to be uncovered.</p>
+        <button onclick="window.location.href='resume.pdf'">Download my resume</button>
+        <button onclick="alert('Let’s work together!')">Hire Me Now!</button>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="project-container">
+            <div class="project">Project 1</div>
+            <div class="project">Project 2</div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2>Skills</h2>
+        <div class="skills-container">
+            <div class="skill">Python</div>
+            <div class="skill">R</div>
+            <div class="skill">SQL</div>
+            <div class="skill">Tableau</div>
+            <div class="skill">Power BI</div>
+            <div class="skill">Excel</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <button onclick="alert('Email me at: vikhrams@saveetha.ac.in')">Get in Touch</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
