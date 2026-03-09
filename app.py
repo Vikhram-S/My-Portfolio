@@ -317,11 +317,10 @@ AI Research
 
 # ---------- TABS ----------
 
-tab1,tab2,tab3,tab4 = st.tabs([
+tab1,tab2,tab3 = st.tabs([
 "Research",
 "Publications",
 "Recognition",
-"GitHub"
 ])
 
 # ---------- PROJECTS ----------
