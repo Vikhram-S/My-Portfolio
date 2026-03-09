@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="Vikhram S | AI Researcher",
@@ -6,54 +7,163 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------- STYLE ----------
+# ---------- CURSOR REACTIVE AI NETWORK BACKGROUND ----------
+
+components.html("""
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+body{
+margin:0;
+overflow:hidden;
+background:#020617;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="network"></canvas>
+
+<script>
+
+const canvas = document.getElementById("network");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let mouse = {x:null,y:null};
+
+window.addEventListener("mousemove", function(e){
+mouse.x = e.x;
+mouse.y = e.y;
+});
+
+let nodes = [];
+let nodeCount = 80;
+
+for(let i=0;i<nodeCount;i++){
+nodes.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-0.5)*0.6,
+vy:(Math.random()-0.5)*0.6
+});
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+for(let i=0;i<nodes.length;i++){
+
+let n = nodes[i];
+
+n.x += n.vx;
+n.y += n.vy;
+
+if(n.x<0||n.x>canvas.width) n.vx*=-1;
+if(n.y<0||n.y>canvas.height) n.vy*=-1;
+
+ctx.beginPath();
+ctx.arc(n.x,n.y,2,0,Math.PI*2);
+ctx.fillStyle="#6366f1";
+ctx.fill();
+
+for(let j=i+1;j<nodes.length;j++){
+
+let m = nodes[j];
+
+let dx = n.x-m.x;
+let dy = n.y-m.y;
+let dist = Math.sqrt(dx*dx+dy*dy);
+
+if(dist<120){
+
+ctx.beginPath();
+ctx.moveTo(n.x,n.y);
+ctx.lineTo(m.x,m.y);
+ctx.strokeStyle="rgba(99,102,241,0.15)";
+ctx.stroke();
+
+}
+
+}
+
+if(mouse.x && mouse.y){
+
+let dx = n.x-mouse.x;
+let dy = n.y-mouse.y;
+let dist = Math.sqrt(dx*dx+dy*dy);
+
+if(dist<150){
+
+ctx.beginPath();
+ctx.moveTo(n.x,n.y);
+ctx.lineTo(mouse.x,mouse.y);
+ctx.strokeStyle="rgba(168,85,247,0.35)";
+ctx.stroke();
+
+}
+
+}
+
+}
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
+""", height=0, width=0)
+
+# ---------- CSS ----------
+
 st.markdown("""
 <style>
 
-/* BACKGROUND */
-
-.stApp{
-background: radial-gradient(circle at top,#0f172a,#020617);
-color:white;
-}
-
-/* CONTAINER WIDTH */
-
 .block-container{
 max-width:1100px;
-padding-top:2rem;
-padding-left:1.5rem;
-padding-right:1.5rem;
 margin:auto;
+padding-top:2rem;
+padding-left:1rem;
+padding-right:1rem;
 }
 
-/* TITLE */
-
 .title{
-font-size:clamp(36px,6vw,52px);
+font-size:clamp(36px,5vw,52px);
 font-weight:700;
 background: linear-gradient(90deg,#6366f1,#a855f7,#22d3ee);
 -webkit-background-clip:text;
 color:transparent;
 }
 
-/* SUBTITLE */
-
 .subtitle{
 font-size:clamp(18px,2.5vw,24px);
 color:#cbd5f5;
-margin-bottom:6px;
 }
-
-/* PROFILE */
 
 .profile{
 font-size:15px;
 color:#94a3b8;
-margin-bottom:18px;
+margin-bottom:20px;
 }
-
-/* SOCIAL ICONS */
 
 .icons{
 display:flex;
@@ -72,91 +182,63 @@ transition:0.3s;
 transform:scale(1.2);
 }
 
-/* SECTION TITLES */
-
-.section{
-font-size:28px;
-font-weight:600;
-margin-top:25px;
-margin-bottom:10px;
-background:linear-gradient(90deg,#22d3ee,#a855f7);
--webkit-background-clip:text;
-color:transparent;
-}
-
-/* GLASS CARDS */
-
-.card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(14px);
-border-radius:16px;
-padding:22px;
-margin-bottom:18px;
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-6px);
-box-shadow:0 12px 30px rgba(0,0,0,0.5);
-}
-
-/* METRIC GRID */
-
 .metric-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:16px;
-margin-top:10px;
-margin-bottom:25px;
+margin-top:20px;
+margin-bottom:30px;
 }
-
-/* METRIC BOX */
 
 .metric{
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(14px);
 border-radius:16px;
+backdrop-filter:blur(14px);
 height:140px;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-font-size:16px;
-padding:10px;
 transition:0.3s;
 }
 
 .metric:hover{
-box-shadow:0 10px 28px rgba(99,102,241,0.6);
 transform:translateY(-4px);
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
 }
 
 .metric b{
 font-size:28px;
 }
 
-/* MOBILE */
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:16px;
+padding:22px;
+margin-bottom:18px;
+backdrop-filter:blur(14px);
+}
 
-@media (max-width:768px){
+.timeline{
+border-left:2px solid #6366f1;
+padding-left:18px;
+}
+
+.timeline-item{
+margin-bottom:18px;
+}
+
+@media (max-width:600px){
 
 .metric-grid{
-grid-template-columns:1fr 1fr;
-gap:12px;
+grid-template-columns:1fr;
 }
 
 .icons{
 justify-content:center;
-}
-
-}
-
-@media (max-width:500px){
-
-.metric-grid{
-grid-template-columns:1fr;
 }
 
 }
@@ -178,12 +260,7 @@ st.markdown(
 unsafe_allow_html=True
 )
 
-st.write(
-"Final-year Electronics and Communication Engineering student working on "
-"multimodal AI, explainable machine learning, and healthcare AI systems."
-)
-
-# ---------- SOCIAL ----------
+# ---------- SOCIAL ICONS ----------
 
 st.markdown("""
 <div class="icons">
@@ -215,7 +292,7 @@ st.markdown("""
 <div class="metric">
 <b>AI Summit 2026</b>
 Compendium Author
-<small>AI & Gender Empowerment</small>
+AI & Gender Empowerment
 </div>
 
 <div class="metric">
@@ -241,31 +318,27 @@ AI Research
 # ---------- TABS ----------
 
 tab1,tab2,tab3,tab4 = st.tabs([
-"Research Projects",
+"Research",
 "Publications",
 "Recognition",
-"Contact"
+"GitHub"
 ])
 
 # ---------- PROJECTS ----------
 
 with tab1:
 
-    st.markdown('<div class="section">Research Projects</div>', unsafe_allow_html=True)
-
     st.markdown("""
     <div class="card">
     <h3>ExplainableVLM-Rad</h3>
-    Vision-Language framework for automated radiology report generation
-    using interpretable multimodal AI.
+    Vision-Language framework for interpretable radiology report generation.
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="card">
     <h3>mimic-vit-biogpt</h3>
-    Multimodal medical model combining ViT encoder
-    and BioGPT language model.
+    Multimodal medical model combining ViT and BioGPT.
     </div>
     """, unsafe_allow_html=True)
 
@@ -274,33 +347,23 @@ with tab1:
         "https://huggingface.co/Vikhram-S/mimic-vit-biogpt"
     )
 
-    st.markdown("""
-    <div class="card">
-    <h3>IndianConstitution</h3>
-    NLP-based Python library for programmatic analysis
-    of the Constitution of India with 21K+ downloads.
-    </div>
-    """, unsafe_allow_html=True)
-
     st.link_button(
         "View Python Library",
         "https://pypi.org/project/IndianConstitution/"
     )
 
-# ---------- PUBLICATIONS ----------
+# ---------- PUBLICATIONS TIMELINE ----------
 
 with tab2:
 
-    st.markdown('<div class="section">Publications</div>', unsafe_allow_html=True)
-
     st.markdown("""
-    <div class="card">
+    <div class="timeline">
 
-    **Explainable SLM-Guided Vision-Language Models for Multi-Class Skin Lesion Recognition**
-
-    Accepted at **International Conference on Innovative Computing and Communications 2026**
-
-    Appearing in **Springer Lecture Notes in Networks and Systems (LNNS)**.
+    <div class="timeline-item">
+    <b>2026</b><br>
+    Explainable SLM-Guided Vision-Language Models for Skin Lesion Recognition<br>
+    Springer LNNS
+    </div>
 
     </div>
     """, unsafe_allow_html=True)
@@ -309,14 +372,11 @@ with tab2:
 
 with tab3:
 
-    st.markdown('<div class="section">AI Impact Summit Recognition</div>', unsafe_allow_html=True)
-
     st.markdown("""
     <div class="card">
 
-    Lead author of the **NariRaksha case study** featured in the  
-    **AI & Gender Empowerment Casebook** released during the  
-    **India AI Impact Summit 2026** by MeitY and UN Women.
+    Lead author of **NariRaksha case study** featured in  
+    India AI Impact Summit 2026 casebook.
 
     </div>
     """, unsafe_allow_html=True)
@@ -328,22 +388,16 @@ with tab3:
 
     st.image(
         "ai_summit.jpg",
-        caption="AI Impact Summit 2026",
+        caption="India AI Impact Summit 2026",
         use_container_width=True
     )
 
-# ---------- CONTACT ----------
+# ---------- GITHUB HEATMAP ----------
 
 with tab4:
 
-    st.markdown('<div class="section">Contact</div>', unsafe_allow_html=True)
+    st.markdown("### GitHub Activity")
 
-    st.markdown("""
-📧 **Email:** vikhrams@saveetha.ac.in  
-
-💻 **GitHub:** https://github.com/Vikhram-S  
-
-🤗 **HuggingFace:** https://huggingface.co/Vikhram-S  
-
-🔗 **LinkedIn:** https://www.linkedin.com/in/vikhram-s/
-""")
+    components.html("""
+    <img src="https://ghchart.rshah.org/Vikhram-S" width="100%">
+    """, height=200)
