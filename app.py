@@ -391,13 +391,3 @@ with tab3:
         caption="India AI Impact Summit 2026",
         use_container_width=True
     )
-
-# ---------- GITHUB HEATMAP ----------
-
-with tab4:
-
-    st.markdown("### GitHub Activity")
-
-    components.html("""
-    <img src="https://ghchart.rshah.org/Vikhram-S" width="100%">
-    """, height=200)
