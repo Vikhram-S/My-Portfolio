@@ -10,25 +10,27 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* PAGE BACKGROUND */
+/* BACKGROUND */
 
-body{
-background: linear-gradient(135deg,#020617,#0f172a);
+.stApp{
+background: radial-gradient(circle at top,#0f172a,#020617);
 color:white;
 }
 
-/* MAIN CONTAINER */
+/* CONTAINER WIDTH */
 
 .block-container{
+max-width:1100px;
 padding-top:2rem;
-padding-left:5%;
-padding-right:5%;
+padding-left:1.5rem;
+padding-right:1.5rem;
+margin:auto;
 }
 
-/* GRADIENT TITLE */
+/* TITLE */
 
 .title{
-font-size:clamp(36px,5vw,54px);
+font-size:clamp(36px,6vw,52px);
 font-weight:700;
 background: linear-gradient(90deg,#6366f1,#a855f7,#22d3ee);
 -webkit-background-clip:text;
@@ -40,15 +42,15 @@ color:transparent;
 .subtitle{
 font-size:clamp(18px,2.5vw,24px);
 color:#cbd5f5;
-margin-bottom:8px;
+margin-bottom:6px;
 }
 
-/* PROFILE LINE */
+/* PROFILE */
 
 .profile{
-font-size:16px;
+font-size:15px;
 color:#94a3b8;
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 /* SOCIAL ICONS */
@@ -57,16 +59,29 @@ margin-bottom:20px;
 display:flex;
 gap:18px;
 margin-top:10px;
-margin-bottom:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
 }
 
 .icons img{
-width:36px;
+width:34px;
 transition:0.3s;
 }
 
 .icons img:hover{
 transform:scale(1.2);
+}
+
+/* SECTION TITLES */
+
+.section{
+font-size:28px;
+font-weight:600;
+margin-top:25px;
+margin-bottom:10px;
+background:linear-gradient(90deg,#22d3ee,#a855f7);
+-webkit-background-clip:text;
+color:transparent;
 }
 
 /* GLASS CARDS */
@@ -83,10 +98,20 @@ transition:0.3s;
 
 .card:hover{
 transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,0,0,0.6);
+box-shadow:0 12px 30px rgba(0,0,0,0.5);
 }
 
-/* METRIC CARDS */
+/* METRIC GRID */
+
+.metric-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:16px;
+margin-top:10px;
+margin-bottom:25px;
+}
+
+/* METRIC BOX */
 
 .metric{
 background:rgba(255,255,255,0.05);
@@ -98,39 +123,40 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-font-size:18px;
+text-align:center;
+font-size:16px;
+padding:10px;
 transition:0.3s;
 }
 
 .metric:hover{
-box-shadow:0 10px 30px rgba(99,102,241,0.6);
+box-shadow:0 10px 28px rgba(99,102,241,0.6);
 transform:translateY(-4px);
 }
 
-/* BIG METRIC NUMBER */
-
 .metric b{
 font-size:28px;
-}
-
-/* SECTION HEADINGS */
-
-.section{
-font-size:28px;
-font-weight:600;
-margin-top:25px;
-margin-bottom:10px;
-background:linear-gradient(90deg,#22d3ee,#a855f7);
--webkit-background-clip:text;
-color:transparent;
 }
 
 /* MOBILE */
 
 @media (max-width:768px){
 
+.metric-grid{
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
 .icons{
 justify-content:center;
+}
+
+}
+
+@media (max-width:500px){
+
+.metric-grid{
+grid-template-columns:1fr;
 }
 
 }
@@ -157,7 +183,7 @@ st.write(
 "multimodal AI, explainable machine learning, and healthcare AI systems."
 )
 
-# ---------- SOCIAL ICONS ----------
+# ---------- SOCIAL ----------
 
 st.markdown("""
 <div class="icons">
@@ -181,48 +207,36 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.divider()
-
 # ---------- METRICS ----------
 
-c1,c2,c3,c4 = st.columns(4)
+st.markdown("""
+<div class="metric-grid">
 
-with c1:
-    st.markdown("""
-    <div class="metric">
-    <b>AI Summit 2026</b>
-    Compendium Author
-    <small>AI & Gender Empowerment</small>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="metric">
+<b>AI Summit 2026</b>
+Compendium Author
+<small>AI & Gender Empowerment</small>
+</div>
 
-with c2:
-    st.markdown("""
-    <div class="metric">
-    <b>21K+</b>
-    Python Library
-    Downloads
-    </div>
-    """, unsafe_allow_html=True)
+<div class="metric">
+<b>21K+</b>
+Python Library
+Downloads
+</div>
 
-with c3:
-    st.markdown("""
-    <div class="metric">
-    <b>Springer</b>
-    LNNS
-    Publication
-    </div>
-    """, unsafe_allow_html=True)
+<div class="metric">
+<b>Springer</b>
+LNNS
+Publication
+</div>
 
-with c4:
-    st.markdown("""
-    <div class="metric">
-    <b>Multimodal</b>
-    AI Research
-    </div>
-    """, unsafe_allow_html=True)
+<div class="metric">
+<b>Multimodal</b>
+AI Research
+</div>
 
-st.divider()
+</div>
+""", unsafe_allow_html=True)
 
 # ---------- TABS ----------
 
@@ -250,7 +264,7 @@ with tab1:
     st.markdown("""
     <div class="card">
     <h3>mimic-vit-biogpt</h3>
-    Multimodal medical model combining ViT vision encoder
+    Multimodal medical model combining ViT encoder
     and BioGPT language model.
     </div>
     """, unsafe_allow_html=True)
@@ -263,8 +277,8 @@ with tab1:
     st.markdown("""
     <div class="card">
     <h3>IndianConstitution</h3>
-    NLP-based Python library for programmatic analysis of the Constitution
-    of India with 21K+ downloads.
+    NLP-based Python library for programmatic analysis
+    of the Constitution of India with 21K+ downloads.
     </div>
     """, unsafe_allow_html=True)
 
@@ -284,7 +298,8 @@ with tab2:
 
     **Explainable SLM-Guided Vision-Language Models for Multi-Class Skin Lesion Recognition**
 
-    Accepted at *International Conference on Innovative Computing and Communications 2026*  
+    Accepted at **International Conference on Innovative Computing and Communications 2026**
+
     Appearing in **Springer Lecture Notes in Networks and Systems (LNNS)**.
 
     </div>
@@ -324,11 +339,11 @@ with tab4:
     st.markdown('<div class="section">Contact</div>', unsafe_allow_html=True)
 
     st.markdown("""
-    📧 **Email:** vikhrams@saveetha.ac.in  
+📧 **Email:** vikhrams@saveetha.ac.in  
 
-    💻 **GitHub:** https://github.com/Vikhram-S  
+💻 **GitHub:** https://github.com/Vikhram-S  
 
-    🤗 **HuggingFace:** https://huggingface.co/Vikhram-S  
+🤗 **HuggingFace:** https://huggingface.co/Vikhram-S  
 
-    🔗 **LinkedIn:** https://www.linkedin.com/in/vikhram-s/
-    """)
+🔗 **LinkedIn:** https://www.linkedin.com/in/vikhram-s/
+""")
