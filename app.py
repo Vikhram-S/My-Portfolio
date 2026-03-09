@@ -6,40 +6,55 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------- STYLE ----------
+# ---------- RESPONSIVE STYLE ----------
 st.markdown("""
 <style>
 
+/* Background */
 body {
 background: linear-gradient(135deg,#020617,#0f172a);
 color:white;
 }
 
+/* Container width */
+.block-container {
+padding-top: 2rem;
+padding-left: 5%;
+padding-right: 5%;
+}
+
+/* HERO TEXT */
+
 .title{
-font-size:48px;
+font-size:clamp(32px,5vw,48px);
 font-weight:700;
 }
 
 .subtitle{
-font-size:22px;
+font-size:clamp(16px,2.5vw,22px);
 color:#94a3b8;
 margin-bottom:10px;
 }
 
 .profileline{
-font-size:18px;
+font-size:clamp(14px,2vw,18px);
 color:#cbd5f5;
 margin-bottom:15px;
 }
 
+/* METRIC CARDS */
+
 .metric{
 background: linear-gradient(135deg,#6366f1,#9333ea);
-padding:25px;
+padding:20px;
 border-radius:14px;
 text-align:center;
-font-size:20px;
+font-size:clamp(14px,2vw,20px);
 color:white;
+height:100%;
 }
+
+/* PROJECT CARDS */
 
 .card{
 background:#111827;
@@ -49,20 +64,47 @@ border:1px solid #1f2937;
 margin-bottom:15px;
 }
 
+/* SECTION TITLES */
+
 .section{
-font-size:30px;
+font-size:clamp(20px,3vw,30px);
 margin-top:20px;
 margin-bottom:10px;
 font-weight:600;
 }
 
+/* SOCIAL ICONS */
+
+.icons{
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+gap:15px;
+margin-top:10px;
+margin-bottom:10px;
+}
+
 .icons img{
-margin-right:18px;
+width:36px;
 transition:0.3s;
 }
 
 .icons img:hover{
 transform:scale(1.15);
+}
+
+/* MOBILE OPTIMIZATION */
+
+@media (max-width: 768px){
+
+.metric{
+margin-bottom:15px;
+}
+
+.icons{
+justify-content:center;
+}
+
 }
 
 </style>
@@ -91,19 +133,19 @@ st.markdown("""
 <div class="icons">
 
 <a href="https://www.linkedin.com/in/vikhram-s/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="36">
+<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png">
 </a>
 
 <a href="https://github.com/Vikhram-S" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="36">
+<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
 </a>
 
 <a href="https://huggingface.co/Vikhram-S" target="_blank">
-<img src="https://huggingface.co/front/assets/huggingface_logo.svg" width="36">
+<img src="https://huggingface.co/front/assets/huggingface_logo.svg">
 </a>
 
 <a href="mailto:vikhrams@saveetha.ac.in">
-<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" width="36">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
 </a>
 
 </div>
@@ -114,17 +156,14 @@ st.divider()
 # ---------- METRICS ----------
 c1,c2,c3,c4 = st.columns(4)
 
+with c1:
+    st.markdown('<div class="metric">India AI Impact Summit 2026<br>Compendium Author<br><small>AI & Gender Empowerment</small></div>', unsafe_allow_html=True)
+
 with c2:
     st.markdown('<div class="metric">21K+<br>Python Library Downloads</div>', unsafe_allow_html=True)
 
 with c3:
     st.markdown('<div class="metric">Springer<br>LNNS Publication</div>', unsafe_allow_html=True)
-    
-with c1:
-    st.markdown(
-        '<div class="metric">India AI Impact Summit 2026<br>Compendium Author<br><small>AI & Gender Empowerment</small></div>',
-        unsafe_allow_html=True
-    )
 
 with c4:
     st.markdown('<div class="metric">Multimodal<br>AI Research</div>', unsafe_allow_html=True)
@@ -147,7 +186,7 @@ with tab1:
     st.markdown("""
     <div class="card">
     <h3>ExplainableVLM-Rad</h3>
-    Vision–Language framework for automated radiology report generation using interpretable multimodal AI.
+    Vision-Language framework for automated radiology report generation using interpretable multimodal AI.
     </div>
     """, unsafe_allow_html=True)
 
