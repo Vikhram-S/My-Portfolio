@@ -114,14 +114,17 @@ st.divider()
 # ---------- METRICS ----------
 c1,c2,c3,c4 = st.columns(4)
 
-with c1:
+with c2:
     st.markdown('<div class="metric">21K+<br>Python Library Downloads</div>', unsafe_allow_html=True)
 
-with c2:
-    st.markdown('<div class="metric">Springer<br>LNNS Publication</div>', unsafe_allow_html=True)
-
 with c3:
-    st.markdown('<div class="metric">UN Women<br>Casebook Author</div>', unsafe_allow_html=True)
+    st.markdown('<div class="metric">Springer<br>LNNS Publication</div>', unsafe_allow_html=True)
+    
+with c1:
+    st.markdown(
+        '<div class="metric">India AI Impact Summit 2026<br>Compendium Author<br><small>AI & Gender Empowerment</small></div>',
+        unsafe_allow_html=True
+    )
 
 with c4:
     st.markdown('<div class="metric">Multimodal<br>AI Research</div>', unsafe_allow_html=True)
