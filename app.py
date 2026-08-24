@@ -3,390 +3,214 @@ import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="Vikhram S | AI Researcher",
-    page_icon="🧠",
-    layout="wide"
+    page_icon=None,          # no emoji / no icon
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# ---------- CURSOR REACTIVE AI NETWORK BACKGROUND ----------
-
+# ---------- Minimal dark network background (subtle, professional) ----------
 components.html("""
 <!DOCTYPE html>
 <html>
 <head>
 <style>
-
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
-
-body{
-margin:0;
-overflow:hidden;
-background:#020617;
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #020617;
 }
-
 </style>
 </head>
-
 <body>
-
 <canvas id="network"></canvas>
-
 <script>
-
 const canvas = document.getElementById("network");
 const ctx = canvas.getContext("2d");
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let mouse = {x:null,y:null};
-
-window.addEventListener("mousemove", function(e){
-mouse.x = e.x;
-mouse.y = e.y;
-});
-
 let nodes = [];
-let nodeCount = 80;
-
-for(let i=0;i<nodeCount;i++){
-nodes.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-0.5)*0.6,
-vy:(Math.random()-0.5)*0.6
-});
+const nodeCount = 55;
+for (let i = 0; i < nodeCount; i++) {
+    nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35
+    });
 }
 
-function draw(){
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < nodes.length; i++) {
+        let n = nodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 1.4, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(99, 102, 241, 0.55)";
+        ctx.fill();
 
-for(let i=0;i<nodes.length;i++){
-
-let n = nodes[i];
-
-n.x += n.vx;
-n.y += n.vy;
-
-if(n.x<0||n.x>canvas.width) n.vx*=-1;
-if(n.y<0||n.y>canvas.height) n.vy*=-1;
-
-ctx.beginPath();
-ctx.arc(n.x,n.y,2,0,Math.PI*2);
-ctx.fillStyle="#6366f1";
-ctx.fill();
-
-for(let j=i+1;j<nodes.length;j++){
-
-let m = nodes[j];
-
-let dx = n.x-m.x;
-let dy = n.y-m.y;
-let dist = Math.sqrt(dx*dx+dy*dy);
-
-if(dist<120){
-
-ctx.beginPath();
-ctx.moveTo(n.x,n.y);
-ctx.lineTo(m.x,m.y);
-ctx.strokeStyle="rgba(99,102,241,0.15)";
-ctx.stroke();
-
+        for (let j = i + 1; j < nodes.length; j++) {
+            let m = nodes[j];
+            let dx = n.x - m.x;
+            let dy = n.y - m.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 110) {
+                ctx.beginPath();
+                ctx.moveTo(n.x, n.y);
+                ctx.lineTo(m.x, m.y);
+                ctx.strokeStyle = "rgba(99, 102, 241, 0.08)";
+                ctx.stroke();
+            }
+        }
+    }
+    requestAnimationFrame(draw);
 }
-
-}
-
-if(mouse.x && mouse.y){
-
-let dx = n.x-mouse.x;
-let dy = n.y-mouse.y;
-let dist = Math.sqrt(dx*dx+dy*dy);
-
-if(dist<150){
-
-ctx.beginPath();
-ctx.moveTo(n.x,n.y);
-ctx.lineTo(mouse.x,mouse.y);
-ctx.strokeStyle="rgba(168,85,247,0.35)";
-ctx.stroke();
-
-}
-
-}
-
-}
-
-requestAnimationFrame(draw);
-
-}
-
 draw();
-
 </script>
-
 </body>
 </html>
 """, height=0, width=0)
 
 # ---------- CSS ----------
-
 st.markdown("""
 <style>
+/* Hide Streamlit chrome */
+#MainMenu, footer, header {visibility: hidden !important;}
+.stApp {background: transparent;}
 
-.block-container{
-max-width:1100px;
-margin:auto;
-padding-top:2rem;
-padding-left:1rem;
-padding-right:1rem;
+.block-container {
+    max-width: 720px;
+    padding-top: 4.5rem;
+    padding-bottom: 3rem;
 }
 
-.title{
-font-size:clamp(36px,5vw,52px);
-font-weight:700;
-background: linear-gradient(90deg,#6366f1,#a855f7,#22d3ee);
--webkit-background-clip:text;
-color:transparent;
+.main-title {
+    font-size: clamp(2.4rem, 5vw, 3.2rem);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #818cf8, #c084fc, #67e8f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.4rem;
+    text-align: center;
 }
 
-.subtitle{
-font-size:clamp(18px,2.5vw,24px);
-color:#cbd5f5;
+.subtitle {
+    font-size: 1.15rem;
+    color: #94a3b8;
+    text-align: center;
+    margin-bottom: 2.8rem;
+    font-weight: 400;
 }
 
-.profile{
-font-size:15px;
-color:#94a3b8;
-margin-bottom:20px;
+.card {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 16px;
+    padding: 2rem 1.8rem;
+    backdrop-filter: blur(12px);
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.icons{
-display:flex;
-gap:18px;
-margin-top:10px;
-margin-bottom:20px;
-flex-wrap:wrap;
+.card p {
+    color: #e2e8f0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 0.6rem 0;
 }
 
-.icons img{
-width:34px;
-transition:0.3s;
+.card .secondary {
+    color: #94a3b8;
+    font-size: 0.95rem;
 }
 
-.icons img:hover{
-transform:scale(1.2);
+.redirect-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    color: white !important;
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    transition: all 0.25s ease;
+    border: none;
 }
 
-.metric-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:16px;
-margin-top:20px;
-margin-bottom:30px;
+.redirect-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
 }
 
-.metric{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:16px;
-backdrop-filter:blur(14px);
-height:140px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-transition:0.3s;
+.footer-note {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 2.5rem;
 }
 
-.metric:hover{
-transform:translateY(-4px);
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
+.footer-note a {
+    color: #818cf8;
+    text-decoration: none;
 }
-
-.metric b{
-font-size:28px;
-}
-
-.card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:16px;
-padding:22px;
-margin-bottom:18px;
-backdrop-filter:blur(14px);
-}
-
-.timeline{
-border-left:2px solid #6366f1;
-padding-left:18px;
-}
-
-.timeline-item{
-margin-bottom:18px;
-}
-
-@media (max-width:600px){
-
-.metric-grid{
-grid-template-columns:1fr;
-}
-
-.icons{
-justify-content:center;
-}
-
-}
-
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- HERO ----------
+TARGET = "https://vikhram-s.github.io/"
 
-st.markdown('<div class="title">Vikhram S</div>', unsafe_allow_html=True)
-
+# Meta refresh (primary, works without JS)
 st.markdown(
-'<div class="subtitle">AI Researcher | Multimodal AI | Vision-Language Models</div>',
-unsafe_allow_html=True
+    f'<meta http-equiv="refresh" content="2.2; url={TARGET}">',
+    unsafe_allow_html=True
 )
 
+# ---------- Content ----------
+st.markdown('<div class="main-title">Vikhram S</div>', unsafe_allow_html=True)
 st.markdown(
-'<div class="profile">Advisor – Machine Learning, Tech Society | Saveetha Engineering College</div>',
-unsafe_allow_html=True
+    '<div class="subtitle">AI Researcher · Multimodal Intelligence · Medical AI · Public-Interest Technology</div>',
+    unsafe_allow_html=True
 )
 
-# ---------- SOCIAL ICONS ----------
-
-st.markdown("""
-<div class="icons">
-
-<a href="https://www.linkedin.com/in/vikhram-s/" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/174/174857.png">
-</a>
-
-<a href="https://github.com/Vikhram-S" target="_blank">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png">
-</a>
-
-<a href="https://huggingface.co/Vikhram-S" target="_blank">
-<img src="https://huggingface.co/front/assets/huggingface_logo.svg">
-</a>
-
-<a href="mailto:vikhrams@saveetha.ac.in">
-<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
-</a>
-
+st.markdown(f"""
+<div class="card">
+    <p>This page has permanently moved to the official research website.</p>
+    <p class="secondary">You will be redirected automatically in a moment.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ---------- METRICS ----------
-
-st.markdown("""
-<div class="metric-grid">
-
-<div class="metric">
-<b>AI Summit 2026</b>
-Compendium Author
-AI & Gender Empowerment
-</div>
-
-<div class="metric">
-<b>21K+</b>
-Python Library
-Downloads
-</div>
-
-<div class="metric">
-<b>Springer</b>
-LNNS
-Publication
-</div>
-
-<div class="metric">
-<b>Multimodal</b>
-AI Research
-</div>
-
+st.markdown(f"""
+<div style="text-align: center;">
+    <a href="{TARGET}" class="redirect-btn">
+        Continue to Official Website
+    </a>
 </div>
 """, unsafe_allow_html=True)
 
-# ---------- TABS ----------
+st.markdown(f"""
+<div class="footer-note">
+    Permanent address:<br>
+    <a href="{TARGET}">{TARGET}</a>
+</div>
+""", unsafe_allow_html=True)
 
-tab1,tab2,tab3 = st.tabs([
-"Research",
-"Publications",
-"Recognition",
-])
-
-# ---------- PROJECTS ----------
-
-with tab1:
-
-    st.markdown("""
-    <div class="card">
-    <h3>ExplainableVLM-Rad</h3>
-    Vision-Language framework for interpretable radiology report generation.
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="card">
-    <h3>mimic-vit-biogpt</h3>
-    Multimodal medical model combining ViT and BioGPT.
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.link_button(
-        "View HuggingFace Model",
-        "https://huggingface.co/Vikhram-S/mimic-vit-biogpt"
-    )
-
-    st.link_button(
-        "View Python Library",
-        "https://pypi.org/project/IndianConstitution/"
-    )
-
-# ---------- PUBLICATIONS TIMELINE ----------
-
-with tab2:
-
-    st.markdown("""
-    <div class="timeline">
-
-    <div class="timeline-item">
-    <b>2026</b><br>
-    Explainable SLM-Guided Vision-Language Models for Skin Lesion Recognition<br>
-    Springer LNNS
-    </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-# ---------- RECOGNITION ----------
-
-with tab3:
-
-    st.markdown("""
-    <div class="card">
-
-    Lead author of **NariRaksha case study** featured in  
-    India AI Impact Summit 2026 casebook.
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.link_button(
-        "View Casebook",
-        "https://d19ob9sqegt2wc.cloudfront.net/stage/uploads/AI_Empowerment_Case_Study_Web_a09fbf83c9.pdf"
-    )
-
-    st.image(
-        "ai_summit.jpg",
-        caption="India AI Impact Summit 2026",
-        use_container_width=True
-    )
+# JavaScript fallback (highly reliable)
+st.markdown(f"""
+<script>
+    setTimeout(function() {{
+        window.location.replace("{TARGET}");
+    }}, 2200);
+</script>
+""", unsafe_allow_html=True)
